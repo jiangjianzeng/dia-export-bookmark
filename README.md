@@ -11,7 +11,7 @@
 
 ## 下载
 
-前往 [Releases](https://github.com/你的用户名/dia-export-bookmark/releases) 页面下载最新版本的 `.dmg` 安装包。
+前往 [Releases](https://github.com/jiangjianzeng/dia-export-bookmark/releases) 页面下载最新版本的 `.dmg` 安装包。
 
 ## 开发
 
