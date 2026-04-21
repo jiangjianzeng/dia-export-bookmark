@@ -8,8 +8,6 @@ import {
   ChevronDown,
   Folder,
   Link,
-  AlertCircle,
-  CheckCircle,
 } from 'lucide-react';
 import './App.css';
 
