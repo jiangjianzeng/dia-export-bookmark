@@ -1,0 +1,372 @@
+/* ============================================
+   Dia 书签导出 — macOS-inspired clean UI
+   ============================================ */
+
+:root {
+  --bg-page: #f5f5f7;
+  --bg-surface: #ffffff;
+  --bg-hover: #f0f0f2;
+  --bg-active: #e8e8eb;
+  --border: #d2d2d7;
+  --border-subtle: #e5e5ea;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --accent: #007aff;
+  --accent-hover: #0066d6;
+  --accent-light: #e8f2ff;
+  --error: #dc3545;
+  --success: #28a745;
+  --folder-color: #f59e0b;
+  --link-color: #007aff;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --transition-fast: 0.15s ease;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: var(--bg-page);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    sans-serif;
+  color: var(--text-primary);
+  padding: 24px 20px;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* ---- App Layout ---- */
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- Title ---- */
+.app-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* ---- Description ---- */
+.app-desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ---- Drop Zone ---- */
+.drop-zone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  background: var(--bg-surface);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  cursor: default;
+  margin-top: 4px;
+}
+
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.drop-zone.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ---- Drop Inner Layout ---- */
+.drop-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* App Icon Box (clean, minimal) */
+.app-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--bg-active);
+  border: 1.5px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.app-icon-box.detected {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.drop-zone.drag-over .app-icon-box {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Drop Text */
+.drop-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.drop-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.drop-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Action Button */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn.secondary {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
+.action-btn.secondary:hover {
+  background: var(--border);
+}
+
+/* Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--border-subtle);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Status Bar ---- */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-label {
+  color: var(--text-tertiary);
+}
+
+.status-text {
+  color: var(--text-secondary);
+}
+
+.status-text.error {
+  color: var(--error);
+}
+
+.status-text.success {
+  color: var(--success);
+}
+
+/* ---- Bookmarks Section ---- */
+.bookmarks-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.bookmarks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bookmarks-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Bookmarks Tree ---- */
+.bookmarks-tree {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.tree-node {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tree-link {
+  padding-left: 20px;
+  border-radius: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin: 0 -6px;
+  padding-right: 6px;
+}
+
+.tree-link:hover {
+  background: var(--bg-hover);
+}
+
+.tree-link a {
+  color: var(--link-color);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-link a:hover {
+  text-decoration: underline;
+}
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  padding: 3px 6px;
+  margin: 0 -6px;
+  border-radius: 3px;
+  transition: background var(--transition-fast);
+}
+
+.folder-header:hover {
+  background: var(--bg-hover);
+}
+
+.folder-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.folder-children {
+  padding-left: 14px;
+  border-left: 1px solid var(--border-subtle);
+  margin-left: 7px;
+}
+
+.toggle-icon {
+  color: var(--text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toggle-placeholder {
+  display: inline-block;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+.node-icon {
+  flex-shrink: 0;
+}
+
+.folder-icon {
+  color: var(--folder-color);
+}
+
+.link-icon {
+  color: var(--text-tertiary);
+}
+
+/* ---- Scrollbar (macOS-native style) ---- */
+.bookmarks-tree::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bookmarks-tree::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bookmarks-tree::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+  border: 2px solid var(--bg-surface);
+}
+
+.bookmarks-tree::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
