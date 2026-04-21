@@ -2,6 +2,8 @@
 
 一个简洁的 macOS 桌面应用，用于将 [Dia 浏览器](https://www.diabrowser.com/) 的书签导出为标准 HTML 格式，方便导入到 Chrome、Safari、Firefox 等浏览器。
 
+![App Screenshot](screenshots/app.png)
+
 ## 功能
 
 - **拖拽识别**：直接将 `Dia.app` 拖入应用窗口即可自动识别
